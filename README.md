@@ -1,2 +1,2 @@
-# SK Siltron PoC Demo [Backend]
+# Client Center PoC Portal [Backend]
 Custom catalog portal view
