@@ -9,6 +9,12 @@ const fetch = require('node-fetch')
 require('dotenv').config({ path: path.resolve(__dirname, './.env') })
 process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = 0;
 
+app.use(express.static(path.join(__dirname, 'build')))
+
+app.get('/', function(req, res) {
+    res.sendFile(path.join(__dirname, 'build', 'index.html'))
+})
+
 const cp4durl = process.env.URL
 const Token = process.env.TOKEN
 const uname = process.env.USERNAME
