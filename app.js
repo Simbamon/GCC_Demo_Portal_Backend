@@ -1,9 +1,7 @@
-//Client Center CP4D Setup
 const express = require('express')
 const app = express()
 const port = 5001
 const path = require('path')
-const fetch = require('node-fetch')
 
 
 require('dotenv').config({ path: path.resolve(__dirname, './.env') })
@@ -16,9 +14,10 @@ app.get('/', function(req, res) {
 })
 
 const wkcRoute = require('./routes/wkc')
+const watsonmlRoute = require('./routes/watsonml')
 
 app.use('/wkc', wkcRoute)
-
+app.use('/watsonml', watsonmlRoute)
 
 app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`)
