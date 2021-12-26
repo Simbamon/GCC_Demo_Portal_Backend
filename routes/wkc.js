@@ -11,34 +11,34 @@ const Token = process.env.TOKEN
 const uname = process.env.USERNAME
 const password = process.env.PASSWORD
 
-
-const LoadData = async () => {
-    try{
-        const url = cp4durl + `icp4d-api/v1/authorize`
-        const res = await fetch(url, {
-            method: 'POST',
-            headers: {
-                "Cache-Control": "no-cache",
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                username: uname,
-                password: password
-            })
-        });
-        console.log(res.ok);
-        const data = await res.text();
-        // console.log(data);
-        const obj = await JSON.parse(data)
-        const token = await obj['token']
-        // console.log(token)
-    }catch(err) {
-        console.error(err)
-    }
-}
+router.get("/token", async(req, res) => {
+    console.log("Getting WKC token")
+    const url = cp4durl + `icp4d-api/v1/authorize`
+    const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+            "Cache-Control": "no-cache",
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            username: uname,
+            password: password
+        })
+    })
+    .then(res => res.text())
+    .catch(e => {
+        console.error({
+            "message": "Error",
+            error: e,
+        })
+        })
+    // console.log("RESPONSE: ", response)
+    res.send(response)
+})
 
 router.get("/getcatalogs", async (req, res) => {
     console.log("/getcatalog endpoint called")
+    console.log(req)
     const url = cp4durl + `v2/catalogs`
     const response = await fetch(url, {
         method: 'GET',
@@ -57,13 +57,14 @@ router.get("/getcatalogs", async (req, res) => {
     res.send(response)
 })
 
-router.get("/getcataloginfo", async (req, res) => {
+router.post("/getcataloginfo", async (req, res) => {
     console.log("/getcataloginfo endpoint called")
+    const WKC_TOK = req.body.token
     const url = cp4durl + `v2/catalogs/64c25f35-eefb-4172-b6c3-38d8492fb4bb`
     const response = await fetch(url, {
         method: 'GET',
         headers: {
-            "Authorization": "Bearer " + Token
+            "Authorization": "Bearer " + WKC_TOK
         }
     })
     .then(res => res.text())
@@ -73,7 +74,7 @@ router.get("/getcataloginfo", async (req, res) => {
             error: e,
         })
         })
-    console.log("RESPONSE: ", response)
+    // console.log("RESPONSE: ", response)
     res.send(response)
 })
 
@@ -103,13 +104,14 @@ router.get("/getassetlist", async (req, res)=> {
     res.send(response)
 })
 
-router.get("/getassetlistbyreview", async (req, res)=> {
+router.post("/getassetlistbyreview", async (req, res)=> {
     console.log("Getting asset list by review...")
+    const WKC_TOK = req.body.token
     const url = cp4durl + `v2/asset_types/asset/search?catalog_id=64c25f35-eefb-4172-b6c3-38d8492fb4bb`
     const response = await fetch(url, {
         method: 'POST',
         headers: {
-            "Authorization": "Bearer " + Token,
+            "Authorization": "Bearer " + WKC_TOK,
             'Content-Type': 'application/json',
             'Cache-Control': 'no-cache'
         },
