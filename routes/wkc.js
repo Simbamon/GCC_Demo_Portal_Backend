@@ -36,14 +36,14 @@ router.get("/token", async(req, res) => {
     res.send(response)
 })
 
-router.get("/getcatalogs", async (req, res) => {
+router.post("/getcatalogs", async (req, res) => {
     console.log("/getcatalog endpoint called")
-    console.log(req)
+    const WKC_TOK = req.body.token
     const url = cp4durl + `v2/catalogs`
     const response = await fetch(url, {
         method: 'GET',
         headers: {
-            "Authorization": "Bearer " + Token
+            "Authorization": "Bearer " + WKC_TOK
         }
     })
     .then(res => res.text())
@@ -78,13 +78,14 @@ router.post("/getcataloginfo", async (req, res) => {
     res.send(response)
 })
 
-router.get("/getassetlist", async (req, res)=> {
+router.post("/getassetlist", async (req, res)=> {
     console.log("Getting asset list...")
+    const WKC_TOK = req.body.token
     const url = cp4durl + `v2/asset_types/asset/search?catalog_id=64c25f35-eefb-4172-b6c3-38d8492fb4bb`
     const response = await fetch(url, {
         method: 'POST',
         headers: {
-            "Authorization": "Bearer " + Token,
+            "Authorization": "Bearer " + WKC_TOK,
             'Content-Type': 'application/json',
             'Cache-Control': 'no-cache'
         },
@@ -134,13 +135,14 @@ router.post("/getassetlistbyreview", async (req, res)=> {
     res.send(response)
 })
 
-router.get("/getassetmeta", async (req, res)=> {
+router.post("/getassetmeta", async (req, res)=> {
     console.log("Getting asset's meta data...")
+    const WKC_TOK = req.body.token
     const url = cp4durl + `v2/assets/85bdfaed-d1c3-4d27-b508-696a72dbc732?catalog_id=64c25f35-eefb-4172-b6c3-38d8492fb4bb`
     const response = await fetch(url, {
         method: 'GET',
         headers: {
-            "Authorization": "Bearer " + Token
+            "Authorization": "Bearer " + WKC_TOK
         }
     })
     .then(res => res.text())
@@ -154,13 +156,14 @@ router.get("/getassetmeta", async (req, res)=> {
     res.send(response)
 })
 
-router.get("/getassetreview", async (req, res)=> {
+router.post("/getassetreview", async (req, res)=> {
     console.log("Getting asset's review...")
+    const WKC_TOK = req.body.token
     const url = cp4durl + `v2/assets/85bdfaed-d1c3-4d27-b508-696a72dbc732/ratings?catalog_id=64c25f35-eefb-4172-b6c3-38d8492fb4bb`
     const response = await fetch(url, {
         method: 'GET',
         headers: {
-            "Authorization": "Bearer " + Token
+            "Authorization": "Bearer " + WKC_TOK
         }
     })
     .then(res => res.text())
@@ -174,13 +177,14 @@ router.get("/getassetreview", async (req, res)=> {
     res.send(response)
 })
 
-router.get("/getconnection", async (req, res)=> {
+router.post("/getconnection", async (req, res)=> {
     console.log("Getting asset's connection...")
+    const WKC_TOK = req.body.token
     const url = cp4durl + `v2/connections/791fc335-aa6c-4820-80d4-67f1bb2bec3e?catalog_id=64c25f35-eefb-4172-b6c3-38d8492fb4bb`
     const response = await fetch(url, {
         method: 'GET',
         headers: {
-            "Authorization": "Bearer " + Token
+            "Authorization": "Bearer " + WKC_TOK
         }
     })
     .then(res => res.text())
@@ -195,13 +199,14 @@ router.get("/getconnection", async (req, res)=> {
 })
 
 
-router.get("/getassetdata", async (req, res)=> {
+router.post("/getassetdata", async (req, res)=> {
     console.log("Getting asset's review...")
+    const WKC_TOK = req.body.token
     const url = cp4durl + `v2/connections/assets/85bdfaed-d1c3-4d27-b508-696a72dbc732?catalog_id=64c25f35-eefb-4172-b6c3-38d8492fb4bb&fetch=data`
     const response = await fetch(url, {
         method: 'GET',
         headers: {
-            "Authorization": "Bearer " + Token
+            "Authorization": "Bearer " + WKC_TOK
         }
     })
     .then(res => res.text())
