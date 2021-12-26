@@ -7,7 +7,6 @@ require('dotenv').config({ path: path.resolve(__dirname, './.env') })
 process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = 0;
 
 const cp4durl = process.env.URL
-const Token = process.env.TOKEN
 const uname = process.env.USERNAME
 const password = process.env.PASSWORD
 
