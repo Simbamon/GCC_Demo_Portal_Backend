@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const path = require('path')
 const fetch = require('node-fetch')
+const Payload = require('../models/MLPayload')
 const app = express()
 
 require('dotenv').config({ path: path.resolve(__dirname, './.env') })
@@ -100,6 +101,31 @@ router.post('/test', async (req, res) => {
         })
     console.log("RESPONSE: ", response)
     res.send(response)
+})
+
+
+router.get('/', async (req, res) => {
+    try {
+        const payload = await Payload.find();
+        res.json(payload);
+    } catch (error) {
+        res.json({ message: error })
+    }
+})
+
+router.post('/posting', async (req, res) => {
+    console.log(req.body)
+    const payload = new Payload({
+        fields: req.body.fields,
+        values: req.body.values
+    })
+    try {
+        const savedPost = await payload.save()
+        res.json(savedPost)
+    }
+    catch(err) {
+        res.json({ message: err })
+    }
 })
 
 module.exports = router
