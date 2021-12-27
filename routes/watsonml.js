@@ -104,16 +104,16 @@ router.post('/test', async (req, res) => {
 })
 
 
-router.get('/', async (req, res) => {
+router.get('/payload', async (req, res) => {
     try {
-        const payload = await Payload.find();
+        const payload = await Payload.find().select('-_id -__v');
         res.json(payload);
     } catch (error) {
         res.json({ message: error })
     }
 })
 
-router.post('/posting', async (req, res) => {
+router.post('/payload/add', async (req, res) => {
     console.log(req.body)
     const payload = new Payload({
         fields: req.body.fields,
@@ -124,6 +124,15 @@ router.post('/posting', async (req, res) => {
         res.json(savedPost)
     }
     catch(err) {
+        res.json({ message: err })
+    }
+})
+
+router.get('/payload/:postID', async (req, res) => {
+    try {
+        const payload = await Payload.findById(req.params.postID)
+        res.json(payload)
+    } catch (error) {
         res.json({ message: err })
     }
 })

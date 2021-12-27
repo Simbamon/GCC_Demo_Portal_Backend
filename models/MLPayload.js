@@ -1,14 +1,8 @@
 const mongoose = require('mongoose')
 
 const mlPayloadSchema = mongoose.Schema({
-    fields: {
-        type: [String],
-        required: true
-    },
-    values: {
-        type: [Number],
-        required: true
-    }
+    fields: [],
+    values: []
 })
 
 
