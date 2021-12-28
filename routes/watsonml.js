@@ -3,6 +3,7 @@ const router = express.Router();
 const path = require('path')
 const fetch = require('node-fetch')
 const Payload = require('../models/MLPayload')
+const util = require('util')
 const app = express()
 
 require('dotenv').config({ path: path.resolve(__dirname, './.env') })
@@ -81,16 +82,20 @@ var test = {
 }
 
 router.post('/test', async (req, res) => {
+    
     console.log("Response: " + req.body.token)
     const AuthToken = req.body.token
     const url = req.body.url
+    const input_data = req.body.input_data
+    const testing = {input_data}
+    // console.log(util.inspect(testing, false, null, true))
     const response = await fetch(url, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ' + AuthToken
         },
-        body: JSON.stringify(test)
+        body: JSON.stringify(testing)
     })
     .then(res => res.text())
     .catch(e => {
