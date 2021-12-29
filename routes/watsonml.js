@@ -3,8 +3,7 @@ const router = express.Router();
 const path = require('path')
 const fetch = require('node-fetch')
 const Payload = require('../models/MLPayload')
-const util = require('util')
-const app = express()
+// const util = require('util')
 
 require('dotenv').config({ path: path.resolve(__dirname, './.env') })
 router.use(express.json())
@@ -47,39 +46,6 @@ router.get("/token", async (req, res) => {
     console.log("RESPONSE: ", response)
     res.send(response)
 })
-
-var test = {
-	"input_data": [
-		{
-			"fields": [
-                "year",
-				"month",
-				"dayofweek",
-				"borough",
-				"min_humidity",
-				"max_humidity",
-				"min_temp",
-				"max_temp",
-				"max_wind_speed",
-				"weather_description"
-			],
-			"values": [
-				[
-					2021,
-                    1,
-					2,
-					3,
-					1,
-					1,
-					1,
-					1,
-					12,
-					13
-				]
-			]
-		}
-	]
-}
 
 router.post('/test', async (req, res) => {
     
@@ -133,9 +99,9 @@ router.post('/payload/add', async (req, res) => {
     }
 })
 
-router.get('/payload/:postID', async (req, res) => {
+router.get('/payloads/:postID'  , async (req, res) => {
     try {
-        const payload = await Payload.findById(req.params.postID)
+        const payload = await Payload.findById(req.params.postID).select('-_id -__v')
         res.json(payload)
     } catch (error) {
         res.json({ message: err })

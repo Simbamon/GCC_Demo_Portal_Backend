@@ -3,6 +3,7 @@ const router = express.Router();
 const path = require('path')
 const fetch = require('node-fetch')
 
+
 require('dotenv').config({ path: path.resolve(__dirname, './.env') })
 process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = 0;
 
@@ -56,10 +57,12 @@ router.post("/getcatalogs", async (req, res) => {
     res.send(response)
 })
 
-router.post("/getcataloginfo", async (req, res) => {
+router.post("/getcataloginfo/:catalogID", async (req, res) => {
     console.log("/getcataloginfo endpoint called")
     const WKC_TOK = req.body.token
-    const url = cp4durl + `v2/catalogs/64c25f35-eefb-4172-b6c3-38d8492fb4bb`
+    const CP4D_CATALOG_ID = req.params.catalogID
+    console.log(CP4D_CATALOG_ID)
+    const url = cp4durl + `v2/catalogs/` + CP4D_CATALOG_ID
     const response = await fetch(url, {
         method: 'GET',
         headers: {
@@ -73,7 +76,7 @@ router.post("/getcataloginfo", async (req, res) => {
             error: e,
         })
         })
-    // console.log("RESPONSE: ", response)
+    console.log("RESPONSE: ", response)
     res.send(response)
 })
 
@@ -104,10 +107,11 @@ router.post("/getassetlist", async (req, res)=> {
     res.send(response)
 })
 
-router.post("/getassetlistbyreview", async (req, res)=> {
+router.post("/getassetlistbyreview/:catalogID", async (req, res)=> {
     console.log("Getting asset list by review...")
     const WKC_TOK = req.body.token
-    const url = cp4durl + `v2/asset_types/asset/search?catalog_id=64c25f35-eefb-4172-b6c3-38d8492fb4bb`
+    const CP4D_CATALOG_ID = req.params.catalogID
+    const url = cp4durl + `v2/asset_types/asset/search?catalog_id=` + CP4D_CATALOG_ID
     const response = await fetch(url, {
         method: 'POST',
         headers: {
@@ -137,7 +141,9 @@ router.post("/getassetlistbyreview", async (req, res)=> {
 router.post("/getassetmeta", async (req, res)=> {
     console.log("Getting asset's meta data...")
     const WKC_TOK = req.body.token
-    const url = cp4durl + `v2/assets/85bdfaed-d1c3-4d27-b508-696a72dbc732?catalog_id=64c25f35-eefb-4172-b6c3-38d8492fb4bb`
+    const CP4D_CATALOG_ID = req.body.catalog_id
+    const CP4D_ASSET_ID = req.body.asset_id
+    const url = cp4durl + `v2/assets/` + CP4D_ASSET_ID + `?catalog_id=` + CP4D_CATALOG_ID
     const response = await fetch(url, {
         method: 'GET',
         headers: {

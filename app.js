@@ -23,6 +23,11 @@ const watsonmlRoute = require('./routes/watsonml')
 app.use('/wkc', wkcRoute)
 app.use('/watsonml', watsonmlRoute)
 
+app.get(['/asdf', '/asdf/:ID'], function(req, res) {
+    console.log("masdf")
+    console.log(req.params.ID)
+})
+
 mongoose.connect(
     process.env.DB_CONNECTION,
     { useNewUrlParser: true, useUnifiedTopology: true },
