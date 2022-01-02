@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const path = require('path')
 const fetch = require('node-fetch')
-
+const redis = require('redis')
 
 require('dotenv').config({ path: path.resolve(__dirname, './.env') })
 process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = 0;
@@ -10,30 +10,43 @@ process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = 0;
 const cp4durl = process.env.URL
 const uname = process.env.USERNAME
 const password = process.env.PASSWORD
+const REDIS_PORT = process.env.PORT || 6379
+const redisClient = redis.createClient(REDIS_PORT)
 
 router.get("/token", async(req, res) => {
-    console.log("Getting WKC token")
-    const url = cp4durl + `icp4d-api/v1/authorize`
-    const response = await fetch(url, {
-        method: 'POST',
-        headers: {
-            "Cache-Control": "no-cache",
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            username: uname,
-            password: password
-        })
+    redisClient.get("token", async(error, token) => {
+        if(error) throw error
+        if(token !== null) {
+            console.log("Token Cache Hit")
+            return res.json(JSON.parse(token))
+        }
+        else{
+            console.log("Getting WKC token")
+            const url = cp4durl + `icp4d-api/v1/authorize`
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    "Cache-Control": "no-cache",
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    username: uname,
+                    password: password
+                })
+            })
+            .then(res => res.text())
+            .catch(e => {
+                console.error({
+                    "message": "Error",
+                    error: e,
+                })
+                })
+            // console.log("RESPONSE: ", response)
+            redisClient.setex("token", 1800, response)
+            res.send(response)            
+        }
     })
-    .then(res => res.text())
-    .catch(e => {
-        console.error({
-            "message": "Error",
-            error: e,
-        })
-        })
-    // console.log("RESPONSE: ", response)
-    res.send(response)
+    
 })
 
 router.post("/getcatalogs", async (req, res) => {
