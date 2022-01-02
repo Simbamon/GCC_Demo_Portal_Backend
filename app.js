@@ -7,7 +7,6 @@ const bodyParser = require('body-parser')
 const cors = require('cors')
 
 require('dotenv').config({ path: path.resolve(__dirname, './.env') })
-process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = 0;
 
 app.use(cors())
 app.use(bodyParser.json())

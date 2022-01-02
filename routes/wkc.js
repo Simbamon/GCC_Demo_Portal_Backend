@@ -10,8 +10,19 @@ process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = 0;
 const cp4durl = process.env.URL
 const uname = process.env.USERNAME
 const password = process.env.PASSWORD
-const REDIS_PORT = process.env.PORT || 6379
-const redisClient = redis.createClient(REDIS_PORT)
+const redisHost = process.env.REDISHOST
+const redisPort = process.env.REDISPORT
+const redisPassword = process.env.REDISPASSWORD
+
+//For Redis local
+// const REDIS_PORT = "process.env.PORT || 6379"
+// const redisClient = redis.createClient(REDIS_PORT)
+
+const redisClient = redis.createClient({
+    host: redisHost,
+    port: redisPort,
+    password: redisPassword
+})
 
 router.get("/token", async(req, res) => {
     redisClient.get("token", async(error, token) => {
