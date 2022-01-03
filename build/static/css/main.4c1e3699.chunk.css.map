@@ -1,0 +1,1 @@
+{"version":3,"sources":["webpack://src/App.css"],"names":[],"mappings":"AAAA,EACE,QAAS,CACT,SAAU,CACV,wCACF,CAEA,YACE,YACF,CAEA,UACE,QACF","file":"main.4c1e3699.chunk.css","sourcesContent":["*{\n  margin: 0;\n  padding: 0;\n  font-family: 'Source Sans Pro', sans-serif;\n}\n\n.mainScreen{\n  display: flex;\n}\n\n.contents{\n  flex: 6;\n}"]}
