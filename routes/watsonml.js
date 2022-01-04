@@ -8,44 +8,45 @@ const Payload = require('../models/MLPayload')
 require('dotenv').config({ path: path.resolve(__dirname, './.env') })
 router.use(express.json())
 
-const api_key = process.env.API_KEY
+//This is for Cloud CP4D WML
+// const api_key = process.env.API_KEY
 
-var encodedData = {
-    'grant_type': 'urn:ibm:params:oauth:grant-type:apikey',
-    'apikey': api_key
-};
+// var encodedData = {
+//     'grant_type': 'urn:ibm:params:oauth:grant-type:apikey',
+//     'apikey': api_key
+// };
 
-var formBody = [];
+// var formBody = [];
 
-for (var data in encodedData) {
-    var encodedKey = encodeURIComponent(data);
-    var encodedValue = encodeURIComponent(encodedData[data]);
-    formBody.push(encodedKey + "=" + encodedValue);
-}
+// for (var data in encodedData) {
+//     var encodedKey = encodeURIComponent(data);
+//     var encodedValue = encodeURIComponent(encodedData[data]);
+//     formBody.push(encodedKey + "=" + encodedValue);
+// }
 
-formBody = formBody.join("&");
+// formBody = formBody.join("&");
 
-router.get("/token", async (req, res) => {
-    console.log("get the token")
-    const url = `https://iam.cloud.ibm.com/identity/token`
-    const response = await fetch(url, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            'Accept': 'application/json'
-        },
-        body: formBody
-    })
-    .then(res => res.text())
-    .catch(e => {
-        console.error({
-            "message": "Error",
-            error: e,
-        })
-        })
-    console.log("RESPONSE: ", response)
-    res.send(response)
-})
+// router.get("/token", async (req, res) => {
+//     console.log("get the token")
+//     const url = `https://iam.cloud.ibm.com/identity/token`
+//     const response = await fetch(url, {
+//         method: 'POST',
+//         headers: {
+//             'Content-Type': 'application/x-www-form-urlencoded',
+//             'Accept': 'application/json'
+//         },
+//         body: formBody
+//     })
+//     .then(res => res.text())
+//     .catch(e => {
+//         console.error({
+//             "message": "Error",
+//             error: e,
+//         })
+//         })
+//     console.log("RESPONSE: ", response)
+//     res.send(response)
+// })
 
 router.post('/test', async (req, res) => {
     
