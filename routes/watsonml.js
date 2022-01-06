@@ -3,11 +3,24 @@ const router = express.Router();
 const path = require('path')
 const fetch = require('node-fetch')
 const Payload = require('../models/MLPayload')
+const redis = require('redis')
 // const util = require('util')
 
 require('dotenv').config({ path: path.resolve(__dirname, './.env') })
 router.use(express.json())
 
+const cp4dwmlurl = process.env.WMLURL
+const wml_uname = process.env.WMLUSERNAME
+const wml_password = process.env.WMLPASSWORD
+const redisHost = process.env.REDISHOST
+const redisPort = process.env.REDISPORT
+const redisPassword = process.env.REDISPASSWORD
+
+const redisClient = redis.createClient({
+    host: redisHost,
+    port: redisPort,
+    password: redisPassword
+})
 //This is for Cloud CP4D WML
 // const api_key = process.env.API_KEY
 
@@ -48,9 +61,44 @@ router.use(express.json())
 //     res.send(response)
 // })
 
-router.post('/test', async (req, res) => {
+router.get("/wmltoken", async(req, res) => {
+    redisClient.get("wmltoken", async(error, token) => {
+        if(error) throw error
+        if(token !== null) {
+            console.log("Token Cache Hit")
+            return res.json(JSON.parse(token))
+        }
+        else{
+            console.log("Getting WML token")
+            const url = cp4dwmlurl + `icp4d-api/v1/authorize`
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    "Cache-Control": "no-cache",
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    username: wml_uname,
+                    password: wml_password
+                })
+            })
+            .then(res => res.text())
+            .catch(e => {
+                console.error({
+                    "message": "Error",
+                    error: e,
+                })
+                })
+            // console.log("RESPONSE: ", response)
+            redisClient.setex("wmltoken", 1800, response)
+            res.send(response)                        
+        }
+    })
     
-    console.log("Response: " + req.body.token)
+})
+
+router.post('/test', async (req, res) => {
+    // console.log("Response: " + req.body)
     const AuthToken = req.body.token
     const url = req.body.url
     const input_data = req.body.input_data
