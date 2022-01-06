@@ -4,4 +4,4 @@ COPY package.json ./
 RUN yarn
 COPY . .
 EXPOSE 8080
-COPY [ "yarn", "start" ]
+CMD [ "yarn", "start" ]
