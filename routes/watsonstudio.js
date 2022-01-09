@@ -8,11 +8,12 @@ require('dotenv').config({ path: path.resolve(__dirname, './.env') })
 router.use(express.json())
 
 const cp4dwmlurl = process.env.WMLURL
+const wml_password = process.env.WMLPASSWORD
 
 router.post("/wstoken", async(req, res) => {
     console.log("Getting Watson Studio token")
     const uname = req.body.uname
-    const upassword = req.body.upassword
+    const upassword = wml_password
     const url = cp4dwmlurl + `icp4d-api/v1/authorize`
     const response = await fetch(url, {
         method: 'POST',
