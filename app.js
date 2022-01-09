@@ -18,9 +18,11 @@ app.get('/', function(req, res) {
 
 const wkcRoute = require('./routes/wkc')
 const watsonmlRoute = require('./routes/watsonml')
+const watsonStudioRoute = require('./routes/watsonstudio')
 
 app.use('/wkc', wkcRoute)
 app.use('/watsonml', watsonmlRoute)
+app.use('/watsonstudio', watsonStudioRoute)
 
 mongoose.connect(
     process.env.DB_CONNECTION,

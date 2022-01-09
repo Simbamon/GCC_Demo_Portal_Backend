@@ -21,6 +21,7 @@ const redisClient = redis.createClient({
     port: redisPort,
     password: redisPassword
 })
+
 //This is for Cloud CP4D WML
 // const api_key = process.env.API_KEY
 
