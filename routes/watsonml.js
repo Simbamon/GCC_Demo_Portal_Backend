@@ -97,13 +97,14 @@ router.get("/wmltoken", async(req, res) => {
     
 })
 
-router.post('/test', async (req, res) => {
+router.post('/predict', async (req, res) => {
     // console.log("Response: " + req.body)
     const AuthToken = req.body.token
     const url = req.body.url
     const input_data = req.body.input_data
     const testing = {input_data}
-    // console.log(util.inspect(testing, false, null, true))
+    // This is for testing
+    // console.log(util.inspect(req.body, false, null, true))
     const response = await fetch(url, {
         method: 'POST',
         headers: {
@@ -148,7 +149,7 @@ router.post('/payload/add', async (req, res) => {
     }
 })
 
-router.get('/payloads/:postID'  , async (req, res) => {
+router.get('/payload/:postID'  , async (req, res) => {
     try {
         const payload = await Payload.findById(req.params.postID).select('-_id -__v')
         res.json(payload)
