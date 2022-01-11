@@ -10,7 +10,7 @@ require('dotenv').config({ path: path.resolve(__dirname, './.env') })
 router.use(express.json())
 
 const cp4dwmlurl = process.env.WMLURL
-const wml_uname = process.env.WMLUSERNAME
+// const wml_uname = process.env.WMLUSERNAME
 const wml_password = process.env.WMLPASSWORD
 const redisHost = process.env.REDISHOST
 const redisPort = process.env.REDISPORT
@@ -62,7 +62,7 @@ const redisClient = redis.createClient({
 //     res.send(response)
 // })
 
-router.get("/wmltoken", async(req, res) => {
+router.post("/wmltoken", async(req, res) => {
     redisClient.get("wmltoken", async(error, token) => {
         if(error) throw error
         if(token !== null) {
@@ -71,7 +71,9 @@ router.get("/wmltoken", async(req, res) => {
         }
         else{
             console.log("Getting WML token")
+            console.log(req.body.username)
             const url = cp4dwmlurl + `icp4d-api/v1/authorize`
+            const username = req.body.username
             const response = await fetch(url, {
                 method: 'POST',
                 headers: {
@@ -79,7 +81,7 @@ router.get("/wmltoken", async(req, res) => {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
-                    username: wml_uname,
+                    username: username,
                     password: wml_password
                 })
             })
@@ -95,7 +97,6 @@ router.get("/wmltoken", async(req, res) => {
             res.send(response)                        
         }
     })
-    
 })
 
 router.post('/predict', async (req, res) => {
