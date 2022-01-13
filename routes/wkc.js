@@ -5,7 +5,7 @@ const fetch = require('node-fetch')
 const redis = require('redis')
 
 require('dotenv').config({ path: path.resolve(__dirname, './.env') })
-process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = 0;
+// process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = 0;
 
 const cp4durl = process.env.URL
 const uname = process.env.USERNAME
