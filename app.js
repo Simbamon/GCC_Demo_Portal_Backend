@@ -6,10 +6,11 @@ const path = require('path')
 const bodyParser = require('body-parser')
 const cors = require('cors')
 const https = require('https')
+const fs = require('fs')
 
 const sslServer = https.createServer({
-    key: '',
-    cert: '',
+    key: fs.readFileSync(path.join(__dirname, 'cert', 'key.pem')),
+    cert: fs.readFileSync(path.join(__dirname, 'cert', 'cert.pem')),
 }, app)
 
 require('dotenv').config({ path: path.resolve(__dirname, './.env') })
@@ -24,7 +25,8 @@ app.get('/', function(req, res) {
 
 const wkcRoute = require('./routes/wkc')
 const watsonmlRoute = require('./routes/watsonml')
-const watsonStudioRoute = require('./routes/watsonstudio')
+// const watsonStudioRoute = require('./routes/watsonstudio')
+const { fstat } = require('fs')
 
 app.use('/wkc', wkcRoute)
 app.use('/watsonml', watsonmlRoute)
@@ -37,5 +39,9 @@ mongoose.connect(
 )
 
 app.listen(port, () => {
-    console.log(`Example app listening at http://localhost:${port}`)
+    console.log(`Example app(local) listening at http://localhost:${port}`)
+})
+
+sslServer.listen(5000, () => {
+    console.log(`Example app(Seucred) listening at https://localhost:5000`)
 })
