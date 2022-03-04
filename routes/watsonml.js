@@ -63,14 +63,7 @@ const redisClient = redis.createClient({
 // })
 
 router.post("/wmltoken", async(req, res) => {
-    redisClient.get("wmltoken", async(error, token) => {
-        if(error) throw error
-        if(token !== null) {
-            console.log("Token Cache Hit")
-            return res.json(JSON.parse(token))
-        }
-        else{
-            console.log("Getting WML token")
+    console.log("Getting WML token")
             console.log(req.body.username)
             const url = cp4dwmlurl + `icp4d-api/v1/authorize`
             const username = req.body.username
@@ -92,11 +85,20 @@ router.post("/wmltoken", async(req, res) => {
                     error: e,
                 })
                 })
-            // console.log("RESPONSE: ", response)
-            redisClient.setex("wmltoken", 1800, response)
-            res.send(response)                        
-        }
-    })
+            res.send(response)
+    // redisClient.get("wmltoken", async(error, token) => {
+    //     if(error) throw error
+    //     if(token !== null) {
+    //         console.log("Token Cache Hit")
+    //         return res.json(JSON.parse(token))
+    //     }
+    //     else{
+            
+    //         // console.log("RESPONSE: ", response)
+    //         redisClient.setEx("wmltoken", 1800, response)
+    //         res.send(response)                        
+    //     }
+    // })
 })
 
 router.post('/predict', async (req, res) => {

@@ -8,10 +8,10 @@ const cors = require('cors')
 const https = require('https')
 const fs = require('fs')
 
-const sslServer = https.createServer({
-    key: fs.readFileSync(path.join(__dirname, 'cert', 'key.pem')),
-    cert: fs.readFileSync(path.join(__dirname, 'cert', 'cert.pem')),
-}, app)
+// const sslServer = https.createServer({
+//     key: fs.readFileSync(path.join(__dirname, 'cert', 'key.pem')),
+//     cert: fs.readFileSync(path.join(__dirname, 'cert', 'cert.pem')),
+// }, app)
 
 require('dotenv').config({ path: path.resolve(__dirname, './.env') })
 
@@ -42,6 +42,6 @@ app.listen(port, () => {
     console.log(`Example app(local) listening at http://localhost:${port}`)
 })
 
-sslServer.listen(5000, () => {
-    console.log(`Example app(Seucred) listening at https://localhost:5000`)
-})
+// sslServer.listen(5000, () => {
+//     console.log(`Example app(Seucred) listening at https://localhost:5000`)
+// })
